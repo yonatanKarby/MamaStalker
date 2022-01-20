@@ -1,6 +1,6 @@
-﻿using MamaStalker.Common.Interfaces;
-using System;
+﻿using System;
 using System.Net.Sockets;
+using MamaStalker.Common.Interfaces;
 
 namespace MamaStalker.Server.Core.Sessions
 {
@@ -37,6 +37,11 @@ namespace MamaStalker.Server.Core.Sessions
                 Console.WriteLine($"Session {Id.ToString()} has stopped");
                 _isRunning = false;
             }
+        }
+
+        public bool IsRunning()
+        {
+            return _isRunning;
         }
     }
 }
