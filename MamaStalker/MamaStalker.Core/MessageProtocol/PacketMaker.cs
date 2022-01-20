@@ -25,30 +25,5 @@ namespace MamaStalker.Common.MessageProtocol
                 throw new Exception("Unrecognized packet type");
             }
         }
-
-        private byte[] GetDataPacket(byte[] data)
-        {
-            throw new NotImplementedException();
-        }
-
-        private byte[] intToBytes(int value)
-        {
-            byte[] intBytes = BitConverter.GetBytes(value);
-            Array.Reverse(intBytes);
-            return intBytes;
-        }
-        private byte[] GetHeader(object data)
-        {
-            var buffer = new List<byte>();
-            buffer.Add((byte)PacketType.Header);
-            var json = JsonConvert.SerializeObject(data);
-            var serializedData = Encoding.ASCII.GetBytes(json);
-            var length = intToBytes(serializedData.Length);
-
-            buffer.AddRange(length);
-            buffer.AddRange(serializedData);
-
-            return buffer.ToArray();
-        }
     }
 }
