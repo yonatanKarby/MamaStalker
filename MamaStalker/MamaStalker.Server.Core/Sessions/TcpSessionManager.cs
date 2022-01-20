@@ -10,6 +10,7 @@ namespace MamaStalker.Server.Core.Sessions
     {
         private IEnumerable<ITcpConnection> _connections;
         private readonly ITcpSessionFactory _sessionFactory;
+        private readonly object _locker = new object();
         private TcpListener _listner;
         public TcpSessionManager(ITcpSessionFactory sessionFactory)
         {
@@ -19,16 +20,24 @@ namespace MamaStalker.Server.Core.Sessions
         
         public void SendAll(byte[] buffer)
         {
-            Parallel.ForEach(_connections, (connection) =>
+            IEnumerable<ITcpConnection> copy;
+            lock (_locker)
+            {
+                copy = _connections.ToArray();
+            }
+            Parallel.ForEach(copy, (connection) =>
             {
                 connection.Write(buffer);
-            });
+            }); 
         }
 
         private void RegisterNewClient(TcpClient client)
         {
             var newSession = _sessionFactory.Create(client);
-            _connections.Append(newSession);
+            lock(_locker)
+            {
+               _connections.Append(newSession);
+            }
         }
 
         public void Start(int portNumber)
