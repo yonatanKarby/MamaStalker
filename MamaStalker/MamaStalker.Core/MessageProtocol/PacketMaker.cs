@@ -31,6 +31,8 @@ namespace MamaStalker.Common.MessageProtocol
 
         private byte[] GetHeader(object data)
         {
+            byte[] buffer = new byte[MessageProtocolSettings.Default.defualtPacketSize];
+            buffer[0] = (byte)MessageTypes.Header;
             throw new NotImplementedException();
         }
     }
