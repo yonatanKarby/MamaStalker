@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Linq;
 using System.Threading.Tasks;
+using MamaStalker.Common.YKDataProtocolMaker;
+using MamaStalker.Common.DataMaker;
 
 namespace MamaStalker.Server.Core.Sessions
 {
@@ -18,7 +20,7 @@ namespace MamaStalker.Server.Core.Sessions
             _connections = new List<ITcpConnection>();
         }
         
-        public void SendAll(byte[] buffer)
+        public void SendAll(PacketHeaderBase header, byte[] buffer)
         {
             IEnumerable<ITcpConnection> copy;
             lock (_locker)
@@ -27,7 +29,8 @@ namespace MamaStalker.Server.Core.Sessions
             }
             Parallel.ForEach(copy, (connection) =>
             {
-                connection.Write(buffer);
+                var messageSender = new LargeMessageSender(connection);
+                messageSender.SendMessage(header, buffer);
             }); 
         }
 

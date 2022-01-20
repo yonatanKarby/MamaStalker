@@ -17,7 +17,7 @@ namespace MamaStalker.Common.DataParser.PacketParsers
         {
             var lengthBytes = TakeFrom(buffer, 1, 5);
             int length = GetIntFromBytes(lengthBytes);
-            var data = TakeFrom(buffer, 4, length);
+            var data = TakeFrom(buffer, 5, length);
             var json = Encoding.ASCII.GetString(data);
             return JsonConvert.DeserializeObject<PacketHeaderBase>(json);
         }

@@ -10,7 +10,7 @@ namespace MamaStalker.Server.Core
         private readonly int _port;
         public void Start()
         {
-            _functionality.Register(_sessionManager.SendAll);
+            //need to  register
             _functionality.Start();
             _sessionManager.Start(_port);
         }

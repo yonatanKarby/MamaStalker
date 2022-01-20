@@ -4,6 +4,7 @@ using MamaStalker.Common.DataParser.PacketParsers;
 using MamaStalker.Common.Interfaces;
 using MamaStalker.Common.YKDataProtocolMaker;
 using System.Collections.Generic;
+using MamaStalker.Common.DataParser.MessageParser;
 
 namespace MamaStalker.Common.DataParser
 {
@@ -21,29 +22,16 @@ namespace MamaStalker.Common.DataParser
         }
         public byte[] Listen()
         {
-            //Get Header
             var headerPacket = _connection.Read();
             var header = ParseHeader(headerPacket);
-            var data = new List<byte>();
-            //Get Packets
-            for(int i=0; i<header.NumberOfPackets; i++)
+            switch(header.type)
             {
-                var packet = _connection.Read();
-                var currentData = ParseData(packet);
-                data.AddRange(currentData);
+                case MessageType.image:
+                    return new KnownLengthReader().Read((ImagePacketHeader)header);
+                default:
+                    throw new Exception("Unsupported header type");
             }
-            return data.ToArray();
         }
-
-        private byte[] ParseData(byte[] packet)
-        {
-            if(Parsers.TryGetValue((PacketType)packet[0], out var parser))
-            {
-                return (byte[])parser.Parse(packet);
-            }
-            throw new ArgumentException("Parser not supported!");
-        }
-
         private PacketHeaderBase ParseHeader(byte[] headerPacket)
         {
             if (Parsers.TryGetValue((PacketType)headerPacket[0], out var parser))
