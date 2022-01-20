@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using MamaStalker.Common.MessageProtocol.PacketMakers;
+using MamaStalker.Common.YKDataProtocolMaker.PacketMakers;
 
-namespace MamaStalker.Common.MessageProtocol
+namespace MamaStalker.Common.YKDataProtocolMaker
 {
     public enum PacketType
     {
@@ -11,7 +11,11 @@ namespace MamaStalker.Common.MessageProtocol
     }
     public class PacketMaker
     {
-        IDictionary<PacketType, IPacketmaker> makers;
+        private readonly Dictionary<PacketType, IPacketmaker> makers = new Dictionary<PacketType, IPacketmaker>()
+        {
+            { PacketType.Header, new HeaderPacketMaker() },
+            { PacketType.data, new DataPacketMaker() }
+        };
         public PacketInfo CreatePacket(PacketType type, object data)
         {
             if(makers.TryGetValue(type, out var maker))

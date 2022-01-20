@@ -1,4 +1,4 @@
-﻿namespace MamaStalker.Common.MessageProtocol
+﻿    namespace MamaStalker.Common.YKDataProtocolMaker
 {
     public class PacketInfo
     {

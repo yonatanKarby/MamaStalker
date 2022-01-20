@@ -1,4 +1,4 @@
-﻿namespace MamaStalker.Common.MessageProtocol.PacketMakers
+﻿namespace MamaStalker.Common.YKDataProtocolMaker.PacketMakers
 {
     public interface IPacketmaker
     {

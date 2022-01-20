@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace MamaStalker.Common.MessageProtocol.PacketMakers
+namespace MamaStalker.Common.YKDataProtocolMaker.PacketMakers
 {
-    public class DataPacketMaker : IPacketmaker
+    public class HeaderPacketMaker : IPacketmaker
     {
         private byte[] intToBytes(int value)
         {
@@ -11,12 +13,18 @@ namespace MamaStalker.Common.MessageProtocol.PacketMakers
             Array.Reverse(intBytes);
             return intBytes;
         }
+
         public PacketInfo makePacket(object data)
         {
             var buffer = new List<byte>();
-            buffer.Add((byte)PacketType.data);
-            buffer.AddRange(intToBytes(((byte[])data).Length));
-            buffer.AddRange((byte[])data);
+            buffer.Add((byte)PacketType.Header);
+            var json = JsonConvert.SerializeObject(data);
+            var serializedData = Encoding.ASCII.GetBytes(json);
+            var length = intToBytes(serializedData.Length);
+
+            buffer.AddRange(length);
+            buffer.AddRange(serializedData);
+
             return new PacketInfo()
             {
                 data = buffer.ToArray(),

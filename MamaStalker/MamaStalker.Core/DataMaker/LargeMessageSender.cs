@@ -1,14 +1,18 @@
 ﻿using MamaStalker.Common.Interfaces;
-using System;
 using System.Collections.Generic;
 
-namespace MamaStalker.Common.MessageProtocol
+namespace MamaStalker.Common.YKDataProtocolMaker
 {
     public class LargeMessageSender
     {
         private ITcpConnection _connection;
         private const int BATCH_SIZE= 1024;
         private PacketMaker _packetmaker = new PacketMaker();
+
+        public LargeMessageSender(ITcpConnection connection)
+        {
+            _connection = connection;
+        }
         public void SendMessage(byte[] data, object headerDto)
         {
             var batches = data.Length / BATCH_SIZE;
@@ -32,9 +36,20 @@ namespace MamaStalker.Common.MessageProtocol
                 }
             }
         }
-        private byte[][] BatchSlice(byte[] data, int batches)
+        private byte[][] BatchSlice(byte[] data, int batchSize)
         {
-            throw new NotImplementedException();
+            var bacthes = new List<byte[]>();
+            var current = new List<byte>();
+            for(int i=0; i<data.Length; i++)
+            {
+                if(i % batchSize == 0 && i != 0)
+                {
+                    bacthes.Add(current.ToArray());
+                    current = new List<byte>();
+                }
+                current.Add(data[i]);
+            }
+            return bacthes.ToArray();
         }
     }
 }
