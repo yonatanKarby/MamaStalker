@@ -2,26 +2,27 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Text;
+using MamaStalker.Common.MessageProtocol.PacketMakers;
 
 namespace MamaStalker.Common.MessageProtocol
 {
-    public enum MessageTypes
+    public enum PacketType
     {
         Header = 0,
         data = 1
     }
     public class PacketMaker
     {
-        public byte[] CreatePacket(MessageTypes type, object data)
+        IDictionary<PacketType, IPacketmaker> makers;
+        public PacketInfo CreatePacket(PacketType type, object data)
         {
-            switch(type)
+            if(makers.TryGetValue(type, out var maker))
             {
-                case MessageTypes.Header:
-                    return GetHeader(data);
-                case MessageTypes.data:
-                    return GetDataPacket((byte[])data);
-                default:
-                    return null;
+                return maker.makePacket(data);
+            }
+            else
+            {
+                throw new Exception("Unrecognized packet type");
             }
         }
 
@@ -39,7 +40,7 @@ namespace MamaStalker.Common.MessageProtocol
         private byte[] GetHeader(object data)
         {
             var buffer = new List<byte>();
-            buffer.Add((byte)MessageTypes.Header);
+            buffer.Add((byte)PacketType.Header);
             var json = JsonConvert.SerializeObject(data);
             var serializedData = Encoding.ASCII.GetBytes(json);
             var length = intToBytes(serializedData.Length);
