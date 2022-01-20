@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MamaStalker.Common.DataMaker;
 
 namespace MamaStalker.Server.Core.Functionality
 {
-    public delegate void OnFunctionalitySend(byte[] buffer);
+    public delegate void OnFunctionalitySend(PacketHeaderBase packet, byte[] buffer);
     public interface IServerFunctionality
     {
         void Register(OnFunctionalitySend callback);

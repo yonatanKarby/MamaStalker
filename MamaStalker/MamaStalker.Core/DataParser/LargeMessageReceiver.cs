@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using MamaStalker.Common.DataMaker;
-using MamaStalker.Common.DataParser.PacketParsers;
 using MamaStalker.Common.Interfaces;
 using MamaStalker.Common.YKDataProtocolMaker;
-using System.Collections.Generic;
+using MamaStalker.Common.DataParser.PacketParsers;
 using MamaStalker.Common.DataParser.MessageParser;
 
 namespace MamaStalker.Common.DataParser

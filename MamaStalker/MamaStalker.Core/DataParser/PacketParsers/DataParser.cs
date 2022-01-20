@@ -16,7 +16,6 @@ namespace MamaStalker.Common.DataParser.PacketParsers
             var data = TakeFrom(buffer, 4, length);
             return data;
         }
-
         private int GetIntFromBytes(byte[] lengthBytes)
         {
             return BitConverter.ToInt32(lengthBytes);

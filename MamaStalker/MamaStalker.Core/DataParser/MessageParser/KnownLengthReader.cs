@@ -1,6 +1,6 @@
-﻿using MamaStalker.Common.DataMaker;
+﻿using System.Collections.Generic;
+using MamaStalker.Common.DataMaker;
 using MamaStalker.Common.Interfaces;
-using System.Collections.Generic;
 
 namespace MamaStalker.Common.DataParser.MessageParser
 {

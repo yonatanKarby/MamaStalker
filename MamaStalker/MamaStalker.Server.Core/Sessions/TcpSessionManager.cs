@@ -31,7 +31,7 @@ namespace MamaStalker.Server.Core.Sessions
             {
                 var messageSender = new LargeMessageSender(connection);
                 messageSender.SendMessage(header, buffer);
-            }); 
+            });
         }
 
         private void RegisterNewClient(TcpClient client)
