@@ -18,10 +18,20 @@ namespace MamaStalker.Common.DataParser.PacketParsers
             var lengthBytes = TakeFrom(buffer, 1, 5);
             int length = GetIntFromBytes(lengthBytes);
             var data = TakeFrom(buffer, 5, length);
-            var json = Encoding.ASCII.GetString(data);
-            return JsonConvert.DeserializeObject<PacketHeaderBase>(json);
+            return parseHeader(data);
         }
-
+        private PacketHeaderBase parseHeader(byte[] data)
+        {
+            var json = Encoding.ASCII.GetString(data);
+            var baseHeader = JsonConvert.DeserializeObject<PacketHeaderBase>(json);
+            switch(baseHeader.type)
+            {
+                case MessageType.image:
+                    return JsonConvert.DeserializeObject<ImagePacketHeader>(json);
+                default:
+                    throw new Exception("Unsupported header type");
+            }
+        }
         private int GetIntFromBytes(byte[] lengthBytes)
         {
             return BitConverter.ToInt32(lengthBytes);
