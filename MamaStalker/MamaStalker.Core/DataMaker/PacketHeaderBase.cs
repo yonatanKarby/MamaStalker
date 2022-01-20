@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MamaStalker.Common.DataMaker
+﻿namespace MamaStalker.Common.DataMaker
 {
     public class PacketHeaderBase
     {

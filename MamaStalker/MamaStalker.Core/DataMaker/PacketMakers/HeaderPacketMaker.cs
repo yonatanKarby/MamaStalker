@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MamaStalker.Common.DataMaker;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,6 +23,10 @@ namespace MamaStalker.Common.YKDataProtocolMaker.PacketMakers
 
         public PacketInfo makePacket(object data)
         {
+            if(!(data is PacketHeaderBase))
+            {
+                throw new ArgumentException("Must be packetHeaderBase");
+            }
             var buffer = new List<byte>();
             buffer.Add((byte)PacketType.Header);
 
