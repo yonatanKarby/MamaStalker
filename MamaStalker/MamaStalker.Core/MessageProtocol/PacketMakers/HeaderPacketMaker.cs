@@ -18,7 +18,7 @@ namespace MamaStalker.Common.MessageProtocol.PacketMakers
         {
             var buffer = new List<byte>();
             buffer.Add((byte)PacketType.Header);
-            var json = JsonConvert.SerializeObject((byte[])data);
+            var json = JsonConvert.SerializeObject(data);
             var serializedData = Encoding.ASCII.GetBytes(json);
             var length = intToBytes(serializedData.Length);
 
