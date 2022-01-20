@@ -6,10 +6,14 @@ namespace MamaStalker.Server.Core.Sessions
 {
     public class TcpSession : ITcpConnection
     {
-        public readonly Guid Id;
-        
         private bool _isRunning = true;
+        public readonly Guid Id;
         private readonly TcpClient _client;
+        public TcpSession(TcpClient client, Guid id)
+        {
+            _client = client;
+            Id = id;
+        }
         public byte[] Read()
         {
             try
