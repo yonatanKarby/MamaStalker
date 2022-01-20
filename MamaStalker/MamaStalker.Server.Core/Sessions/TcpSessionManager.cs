@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
-using System.Text;
+using System.Linq;
 
 namespace MamaStalker.Server.Core.Sessions
 {
@@ -22,10 +22,21 @@ namespace MamaStalker.Server.Core.Sessions
             throw new NotImplementedException();
         }
 
+        private void RegisterNewClient(TcpClient client)
+        {
+            var newSession = _sessionFactory.Create(client);
+            _connections.Append(newSession);
+        }
+
         public void Start(int portNumber)
         {
             _listner = new TcpListener(portNumber);
-            
+            _listner.Start();
+            while (true)
+            {
+                var newClient = _listner.AcceptTcpClient();
+                RegisterNewClient(newClient);
+            }
         }
     }
 }
