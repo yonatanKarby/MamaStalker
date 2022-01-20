@@ -1,8 +1,6 @@
 ﻿using MamaStalker.Common.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Net.Sockets;
-using System.Text;
 
 namespace MamaStalker.Server.Core.Sessions
 {
@@ -16,14 +14,29 @@ namespace MamaStalker.Server.Core.Sessions
         {
             try
             {
-                byte[] buffer = new byte[]
-                _client.GetStream().Read()
+                byte[] buffer = new byte[ServerSettings.Default.DefualtBufferSize];
+                _client.GetStream().Read(buffer);
+                return buffer;
+            }
+            catch
+            {
+                Console.WriteLine($"Session {Id.ToString()} has stopped");
+                _isRunning = false;
+                return null;
             }
         }
 
         public void Write(byte[] buffer)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _client.GetStream().Write(buffer);
+            }
+            catch
+            {
+                Console.WriteLine($"Session {Id.ToString()} has stopped");
+                _isRunning = false;
+            }
         }
     }
 }

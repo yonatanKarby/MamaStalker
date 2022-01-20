@@ -22,5 +22,17 @@ namespace MamaStalker.Server.Core {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1024")]
+        public int DefualtBufferSize {
+            get {
+                return ((int)(this["DefualtBufferSize"]));
+            }
+            set {
+                this["DefualtBufferSize"] = value;
+            }
+        }
     }
 }
