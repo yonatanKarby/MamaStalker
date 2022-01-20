@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MamaStalker.Server.Core.Sessions
 {
@@ -19,7 +20,10 @@ namespace MamaStalker.Server.Core.Sessions
         
         public void SendAll(byte[] buffer)
         {
-            throw new NotImplementedException();
+            Parallel.ForEach(_connections, (connection) =>
+            {
+                connection.Write(buffer);
+            });
         }
 
         private void RegisterNewClient(TcpClient client)
