@@ -9,9 +9,15 @@ namespace MamaStalker.Common.MessageProtocol
     {
         private ITcpConnection _connection;
         private const int BATCH_SIZE= 1024;
-        public void SendMessage(byte[] data)
+        public void SendMessage(byte[] data, object headerDto)
         {
             var batches = data.Length / BATCH_SIZE;
+            byte[][] SplitedData = BatchSlice(data, batches);
+        }
+
+        private byte[][] BatchSlice(byte[] data, int batches)
+        {
+            throw new NotImplementedException();
         }
     }
 }
