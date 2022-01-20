@@ -11,7 +11,14 @@ namespace MamaStalker.Common.DataParser
     {
         private readonly ITcpConnection _connection;
         private readonly IDictionary<PacketType, IPacketparser> Parsers = new Dictionary<PacketType, IPacketparser>()
-        { };
+        {
+            { PacketType.Header, new HeaderParser()},
+            { PacketType.Data, new PacketParsers.DataParser()}
+        };
+        public LargeMessageReceiver(ITcpConnection connection)
+        {
+            _connection = connection;
+        }
         public byte[] Listen()
         {
             //Get Header
