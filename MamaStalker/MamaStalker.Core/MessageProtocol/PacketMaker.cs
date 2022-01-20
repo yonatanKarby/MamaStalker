@@ -36,18 +36,18 @@ namespace MamaStalker.Common.MessageProtocol
             Array.Reverse(intBytes);
             return intBytes;
         }
-
         private byte[] GetHeader(object data)
         {
-            byte[] buffer = new byte[MessageProtocolSettings.Default.defualtPacketSize];
-            buffer[0] = (byte)MessageTypes.Header;
+            var buffer = new List<byte>();
+            buffer.Add((byte)MessageTypes.Header);
             var json = JsonConvert.SerializeObject(data);
             var serializedData = Encoding.ASCII.GetBytes(json);
             var length = intToBytes(serializedData.Length);
 
+            buffer.AddRange(length);
+            buffer.AddRange(serializedData);
 
-
-            throw new NotImplementedException();
+            return buffer.ToArray();
         }
     }
 }
