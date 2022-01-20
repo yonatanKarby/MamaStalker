@@ -7,14 +7,14 @@ namespace MamaStalker.Common.YKDataProtocolMaker
     public enum PacketType
     {
         Header = 0,
-        data = 1
+        Data = 1
     }
     public class PacketMaker
     {
         private readonly Dictionary<PacketType, IPacketmaker> makers = new Dictionary<PacketType, IPacketmaker>()
         {
             { PacketType.Header, new HeaderPacketMaker() },
-            { PacketType.data, new DataPacketMaker() }
+            { PacketType.Data, new DataPacketMaker() }
         };
         public PacketInfo CreatePacket(PacketType type, object data)
         {

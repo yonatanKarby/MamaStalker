@@ -1,4 +1,5 @@
-﻿using MamaStalker.Common.Interfaces;
+﻿using MamaStalker.Common.DataMaker;
+using MamaStalker.Common.Interfaces;
 using System.Collections.Generic;
 
 namespace MamaStalker.Common.YKDataProtocolMaker
@@ -13,15 +14,14 @@ namespace MamaStalker.Common.YKDataProtocolMaker
         {
             _connection = connection;
         }
-        public void SendMessage(byte[] data, object headerDto)
+        public void SendMessage(PacketHeaderBase headerDto, byte[] data)
         {
-            var batches = data.Length / BATCH_SIZE;
-            var slicedBatches = BatchSlice(data, batches);
+            var slicedBatches = BatchSlice(data, BATCH_SIZE);
             var packets = new List<PacketInfo>();
             packets.Add(_packetmaker.CreatePacket(PacketType.Header, headerDto));
             foreach(var batch in slicedBatches)
             {
-                packets.Add(_packetmaker.CreatePacket(PacketType.data, batch));
+                packets.Add(_packetmaker.CreatePacket(PacketType.Data, batch));
             }
 
             Send(packets.ToArray());
@@ -49,6 +49,7 @@ namespace MamaStalker.Common.YKDataProtocolMaker
                 }
                 current.Add(data[i]);
             }
+            bacthes.Add(current.ToArray());
             return bacthes.ToArray();
         }
     }
